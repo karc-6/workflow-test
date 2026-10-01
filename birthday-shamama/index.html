@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shamama — A Retrospective</title>
+<meta name="description" content="A private exhibition, for Shamama.">
+
+<!-- Fraunces (display serif, headlines + letters) and Archivo (UI, labels, body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- soft gallery track-lighting + drifting dust, fixed background -->
+<div class="gallery-light" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="drift" id="drift" aria-hidden="true"></div>
+<div class="dust" id="dust" aria-hidden="true"></div>
+
+<!-- custom gallery cursor (desktop only; see script.js) -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <span class="cursor__ring"></span>
+  <span class="cursor__label" id="cursorLabel"></span>
+</div>
+
+<button class="motion-toggle" id="motionToggle" type="button" aria-pressed="false">
+  <span class="motion-toggle__dot"></span> reduce motion
+</button>
+
+<!-- exhibition-walk progress -->
+<div class="progress" id="progress" aria-hidden="true"><span class="progress__fill" id="progressFill"></span></div>
+
+<!-- ========================= NAV ========================= -->
+<nav class="site-nav" aria-label="Exhibition rooms">
+  <a href="#entrance" class="site-nav__mark">S.</a>
+  <ul class="site-nav__list">
+    <li><a href="#entrance" class="site-nav__link is-active" data-room="entrance">Entrance</a></li>
+    <li><a href="#collection" class="site-nav__link" data-room="collection">Collection</a></li>
+    <li><a href="#guestbook" class="site-nav__link" data-room="guestbook">Her Name</a></li>
+    <li><a href="#correspondence" class="site-nav__link" data-room="correspondence">Correspondence</a></li>
+    <li><a href="#reveal" class="site-nav__link" data-room="reveal">Reveal</a></li>
+  </ul>
+</nav>
+
+<!-- right-edge room index -->
+<div class="room-rail" id="roomRail" aria-hidden="true">
+  <a href="#entrance" data-room="entrance" class="is-active">I</a>
+  <a href="#collection" data-room="collection">II</a>
+  <a href="#guestbook" data-room="guestbook">III</a>
+  <a href="#correspondence" data-room="correspondence">IV</a>
+  <a href="#reveal" data-room="reveal">V</a>
+</div>
+
+<main>
+
+  <!-- ========================= I. ENTRANCE (the one slide) ========================= -->
+  <section id="entrance" class="entrance" data-room="entrance">
+    <div class="entrance__inner" id="entranceInner">
+      <p class="entrance__kicker" id="entranceKicker">private exhibition</p>
+      <h1 class="entrance__title">Shamama</h1>
+      <p class="entrance__subtitle">a retrospective, in her honour</p>
+      <div class="entrance__rule" aria-hidden="true"></div>
+      <p class="entrance__message">To more laughter, brighter days, beautiful memories, and all the dreams you chase.</p>
+      <nav class="doors" aria-label="Rooms">
+        <a href="#collection" class="door"><span class="door__num">II</span><span class="door__name">The Collection</span></a>
+        <a href="#guestbook" class="door"><span class="door__num">III</span><span class="door__name">Her Name</span></a>
+        <a href="#correspondence" class="door"><span class="door__num">IV</span><span class="door__name">Correspondence</span></a>
+        <a href="#reveal" class="door"><span class="door__num">V</span><span class="door__name">The Final Room</span></a>
+      </nav>
+      <a href="#collection" class="entrance__cue">
+        <span>begin the walk</span>
+        <span class="entrance__cue-line" aria-hidden="true"></span>
+      </a>
+    </div>
+  </section>
+
+  <section id="collection" class="collection room" data-room="collection" aria-hidden="true">
+    <div class="room__panel" role="dialog" aria-label="The Collection">
+      <button class="room__close" type="button" aria-label="Close this room">close <span aria-hidden="true">✕</span></button>
+      <div class="room__scroll">
+        <header class="room-head">
+          <span class="room-head__num">II</span>
+          <div>
+            <h2 class="room-head__title">The Collection</h2>
+            <p class="room-head__sub">Ten photographs and three moving images, hung in no particular order.</p>
+          </div>
+        </header>
+        <div class="wall" id="wall">
+          <div class="wall-spotlight" id="wallSpotlight" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="guestbook" class="guestbook room" data-room="guestbook" aria-hidden="true">
+    <div class="room__panel" role="dialog" aria-label="Her Name">
+      <button class="room__close" type="button" aria-label="Close this room">close <span aria-hidden="true">✕</span></button>
+      <div class="room__scroll">
+        <header class="room-head">
+          <span class="room-head__num">III</span>
+          <div>
+            <h2 class="room-head__title">Her Name</h2>
+            <p class="room-head__sub">Her memories are in orbit. Catch seven of them and set each one into a letter.</p>
+          </div>
+        </header>
+        <div class="forge" id="forge">
+          <canvas class="forge__canvas" id="forgeCanvas" role="img" aria-label="Her name, S H A M A M A, built letter by letter from her photographs and videos"></canvas>
+          <div class="forge__cards" id="forgeCards"></div>
+        </div>
+        <div class="forge__foot">
+          <p class="forge__hint" id="forgeHint">Catch one as it passes, then drag it into a letter.</p>
+          <div class="forge__ticks" id="forgeTicks" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="correspondence" class="correspondence room" data-room="correspondence" aria-hidden="true">
+    <div class="room__panel" role="dialog" aria-label="Correspondence">
+      <button class="room__close" type="button" aria-label="Close this room">close <span aria-hidden="true">✕</span></button>
+      <div class="room__scroll">
+        <header class="room-head">
+          <span class="room-head__num">IV</span>
+          <div>
+            <h2 class="room-head__title">Correspondence</h2>
+            <p class="room-head__sub">Three letters, unsent until now — break the seal to read.</p>
+          </div>
+        </header>
+        <div class="vitrines" id="vitrines"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reveal" class="reveal room room--compact" data-room="reveal" aria-hidden="true">
+    <div class="room__panel" role="dialog" aria-label="The Final Room">
+      <button class="room__close" type="button" aria-label="Close this room">close <span aria-hidden="true">✕</span></button>
+      <div class="room__scroll">
+        <header class="room-head room-head--center">
+          <span class="room-head__num">V</span>
+          <h2 class="room-head__title">The Final Room</h2>
+          <p class="room-head__sub">Saved for last.</p>
+        </header>
+        <button class="reveal-btn" id="revealBtn" type="button">Unveil It</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="colophon">
+  <div class="colophon__rule" aria-hidden="true"></div>
+  <p class="colophon__sign">curated with love, for Shamama <span class="colophon__heart">♡</span></p>
+</footer>
+
+<!-- ========================= MUSIC PLAYER ========================= -->
+<div class="player" id="player">
+  <div class="player__mark" aria-hidden="true">♪</div>
+  <div class="player__body">
+    <p class="player__title" id="playerTitle">a song for you</p>
+    <div class="player__row">
+      <button class="player__play" id="playerPlay" type="button" aria-label="Play">
+        <svg viewBox="0 0 24 24" class="icon-play"><path d="M8 5v14l11-7z"/></svg>
+        <svg viewBox="0 0 24 24" class="icon-pause" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+      </button>
+      <div class="player__progress" id="playerProgress">
+        <div class="player__progress-fill" id="playerProgressFill"></div>
+      </div>
+    </div>
+  </div>
+  <input class="player__volume" id="playerVolume" type="range" min="0" max="1" step="0.05" value="0.6" aria-label="Volume">
+  <audio id="bgAudio" preload="none">
+    <source src="audio/birthday-song.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<!-- ========================= LIGHTBOX (with prev/next) ========================= -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
+  <button class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous">‹</button>
+  <figure class="lightbox__frame">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">✕</button>
+    <img class="lightbox__img" id="lightboxImg" src="" alt="">
+    <figcaption class="lightbox__caption">
+      <span class="lightbox__num" id="lightboxNum"></span>
+      <span id="lightboxCaption"></span>
+    </figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next">›</button>
+</div>
+
+<!-- ========================= VIDEO MODAL ========================= -->
+<div class="video-modal" id="videoModal" aria-hidden="true">
+  <div class="video-modal__backdrop" id="videoModalBackdrop"></div>
+  <figure class="video-modal__frame">
+    <button class="video-modal__close" id="videoModalClose" aria-label="Close">✕</button>
+    <video class="video-modal__player" id="videoModalPlayer" controls playsinline></video>
+    <p class="video-modal__fallback" id="videoModalFallback" hidden></p>
+    <figcaption class="video-modal__caption" id="videoModalCaption"></figcaption>
+  </figure>
+</div>
+
+<!-- ========================= REVEAL OVERLAY ========================= -->
+<div class="reveal-overlay" id="revealOverlay" aria-hidden="true">
+  <div class="reveal-overlay__beam" aria-hidden="true"></div>
+  <div class="reveal-overlay__motes" id="revealMotes" aria-hidden="true"></div>
+  <div class="candle" aria-hidden="true">
+    <span class="candle__flame"></span>
+    <span class="candle__stick"></span>
+  </div>
+  <h3 class="reveal-overlay__title">Happy Birthday, Shamama! ♡</h3>
+  <p class="reveal-overlay__sub">You deserve all the beautiful things life has to offer.</p>
+  <button class="reveal-overlay__close" id="revealClose" type="button">return to the room</button>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
